@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的课程表</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 地点太长 → 折成两行，超过两行才截断。
+       写在页面里而不是 css 文件里，是为了绕开浏览器对外部样式的缓存。 */
+    .slot-meta:not(.muted) {
+      display: block;
+      white-space: normal;
+      overflow: hidden;
+      max-height: 2.7em;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <header class="topbar">
+      <div class="brand">
+        <h1 id="page-title">我的课程表</h1>
+        <p class="sub" id="page-sub">加载中…</p>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="prev-week" title="上一周">‹</button>
+        <select class="select" id="week-select" aria-label="选择周次"></select>
+        <button class="btn" id="next-week" title="下一周">›</button>
+        <button class="btn ghost" id="today-btn">回到本周</button>
+      </div>
+    </header>
+
+    <section class="stats" id="stats"></section>
+
+    <div class="table-wrap">
+      <div class="timetable" id="timetable"></div>
+    </div>
+
+    <section class="week-list">
+      <h2>本周课程清单</h2>
+      <div id="week-list" class="list"></div>
+    </section>
+
+    <footer class="foot">
+      数据在 <code>data/courses.js</code>，学期设置（开学日期、节次时间）在 <code>data/meta.js</code>。
+    </footer>
+  </div>
+
+  <!-- 顺序不能乱：先设置，再数据，最后渲染 -->
+  <script src="data/meta.js"></script>
+  <script src="data/courses.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
