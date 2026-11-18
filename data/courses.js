@@ -111,7 +111,7 @@ window.COURSE_LIST = [
   },
   {
     name: "职业发展与就业指导1",
-    teacher: "周老师",
+    teacher: "陆长浩",
     location: "匀东同德楼 普通教室 215",
     day: 4,
     startSection: 5,
