@@ -201,7 +201,8 @@ body {
 }
 
 .time-cell b { font-size: 12px; color: var(--text); opacity: .7; }
-.time-cell small { font-size: 10px; }
+.time-cell small { font-size: 10px; line-height: 1.2; }
+.time-cell small.t-end { opacity: .6; }
 
 /* 课程块 */
 
@@ -242,6 +243,17 @@ body {
 
 .slot-meta.muted { opacity: .55; }
 
+/* 几点上课 / 几点下课 */
+.slot-clock {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text);
+  opacity: .78;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* 地点太长 → 折成两行，超过两行才省略 */
 .slot-meta:not(.muted) {
   display: -webkit-box;
@@ -263,6 +275,7 @@ body {
 
 /* 只有一节课时，只留课程名 */
 .slot.compact .slot-meta,
+.slot.compact .slot-clock,
 .slot.compact .slot-weeks { display: none; }
 
 .empty-tip {
@@ -364,8 +377,24 @@ body {
   .brand h1 { font-size: 19px; }
   .stat-side { margin-left: 0; }
   .table-wrap { padding: 8px; }
-  .timetable { gap: 3px; grid-template-rows: 34px repeat(var(--sections, 12), 58px); }
+  .timetable {
+    gap: 3px;
+    grid-template-columns: 64px repeat(7, minmax(0, 1fr));
+    grid-template-rows: 34px repeat(var(--sections, 12), 58px);
+  }
+  /* 左右滑动时，节次和时间钉在左边，不会被滑走 */
+  .corner,
+  .time-cell {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--surface);
+  }
+  .time-cell { border-radius: 0; }
+  .time-cell b { font-size: 13px; }
+  .time-cell small { font-size: 9.5px; }
   .li-weeks { display: none; }
+  .li-meta b { font-weight: 700; }
 }
 
 @media print {

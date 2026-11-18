@@ -115,6 +115,14 @@
     return p ? label + " · " + p : label;
   }
 
+  /* 这门课几点到几点：第一节的开始 → 最后一节的结束 */
+  function timeRangeOf(course) {
+    var first = SECTIONS[Number(course.startSection) - 1];
+    var last = SECTIONS[Number(course.endSection) - 1];
+    if (!first || !last || !first.start || !last.end) return "";
+    return first.start + "–" + last.end;
+  }
+
   /* 这门课在第 week 周上不上 */
   function activeIn(course, week) {
     if (course.parity === "odd" && week % 2 === 0) return false;
@@ -204,7 +212,8 @@
       var info = SECTIONS[s - 1] || { start: "", end: "" };
       timeCell.innerHTML =
         '<b>' + s + "</b>" +
-        '<small>' + esc(info.start || "") + "</small>";
+        '<small>' + esc(info.start || "") + "</small>" +
+        '<small class="t-end">' + esc(info.end || "") + "</small>";
       grid.appendChild(place(timeCell, 1, s + 1, 1));
 
       for (var col = 1; col <= 7; col++) {
@@ -239,8 +248,11 @@
       var card = document.createElement("div");
       card.className = "slot" + (span === 1 ? " compact" : "");
       card.style.setProperty("--c", colorOf(course.name));
+      var clock = timeRangeOf(course);
+
       card.title = [
         course.name,
+        clock,
         course.location,
         course.teacher,
         weeksText(course)
@@ -250,6 +262,7 @@
         '<div class="slot-name">' + esc(course.name) + "</div>" +
         '<div class="slot-meta">' + esc(course.location || "地点待定") + "</div>" +
         '<div class="slot-meta muted">' + esc(course.teacher || "") + "</div>" +
+        (clock ? '<div class="slot-clock">' + esc(clock) + "</div>" : "") +
         '<div class="slot-weeks">' + esc(weeksText(course)) + "</div>";
 
       grid.appendChild(place(card, Number(course.day) + 1, Number(course.startSection) + 1, span));
@@ -320,13 +333,16 @@
         html += '<div class="day-group"><h3>' + DAY_NAMES[course.day - 1] + "</h3>";
         lastDay = course.day;
       }
+      var clock = timeRangeOf(course);
       html +=
         '<div class="list-item">' +
           '<i class="dot" style="--c:' + colorOf(course.name) + '"></i>' +
           '<div class="li-body">' +
             '<div class="li-name">' + esc(course.name) + "</div>" +
-            '<div class="li-meta">第' + course.startSection + "–" + course.endSection +
-              "节 · " + esc(course.location || "地点待定") +
+            '<div class="li-meta">' +
+              (clock ? "<b>" + esc(clock) + "</b> · " : "") +
+              "第" + course.startSection + "–" + course.endSection + "节 · " +
+              esc(course.location || "地点待定") +
               (course.teacher ? " · " + esc(course.teacher) : "") +
             "</div>" +
           "</div>" +
