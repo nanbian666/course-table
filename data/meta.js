@@ -9,7 +9,7 @@ window.COURSE_META = {
   semesterStart: "2026-08-24",
 
   // 一共多少教学周
-  totalWeeks: 18,
+  totalWeeks: 19,
 
   // 每天几节课、每节课几点开始几点结束（按你学校的作息改）
   sections: [
